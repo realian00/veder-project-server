@@ -197,7 +197,7 @@ app.put('/atualizar', async function (req, res) {
     await col.updateOne(
         { "_id": ObjectId(`${req.body._id}`) },
         {
-            $set: { 'obs': req.body.newValue, 'pendencia': req.body.pendencia }
+            $set: { 'obs': req.body.newValue, 'pendencia': req.body.pendencia, 'garantia': req.body.garantia }
         }
     )
     importLoginDb()
@@ -219,7 +219,7 @@ app.put('/enviar', async function (req, res,) {
     await col.updateOne(
         { "_id": ObjectId(`${req.body._id}`) },
         {
-            $set: { 'obs': req.body.newValue, 'pendencia': req.body.pendencia }
+            $set: { 'obs': req.body.newValue, 'pendencia': req.body.pendencia, 'garantia': req.body.garantia }
         }
     )
 
