@@ -1,3 +1,8 @@
+// test environment. List of things to change for deploy:
+// mongoDB URL - const 'url'
+// port - const 'port'
+
+
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -13,7 +18,12 @@ var options = {
 
 console.log(options)
 const { MongoClient } = require("mongodb");
-const url = 'mongodb+srv://realian:BAPhomet00@cluster0.bainq.mongodb.net/login?retryWrites=true&w=majority';
+
+const testUrl = 'mongodb+srv://realian:BAPhomet00@cluster0.eztbd.mongodb.net/login?retryWrites=true&w=majority'
+const url = testUrl
+
+
+// const url = 'mongodb+srv://realian:BAPhomet00@cluster0.bainq.mongodb.net/login?retryWrites=true&w=majority';
 const client = new MongoClient(url);
 const ObjectId = require('mongodb').ObjectId
 
@@ -295,9 +305,9 @@ setTimeout(() => {
 
 
 
+const testPort = 3008
+// const port = 3004
 
-
-
-https.listen(3004, options, function(){
+https.listen(testPort, options, function(){
    console.log('listening on *:3004');
 });
