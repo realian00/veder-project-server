@@ -306,8 +306,9 @@ setTimeout(() => {
 
 
 const testPort = 3008
+const port = testPort
 // const port = 3004
 
-https.listen(testPort, options, function(){
-   console.log('listening on *:3004');
+https.listen(port, options, function(){
+   console.log(`listening on *:${port}`);
 });
