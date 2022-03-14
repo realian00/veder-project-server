@@ -19,11 +19,11 @@ var options = {
 console.log(options)
 const { MongoClient } = require("mongodb");
 
-const testUrl = 'mongodb+srv://realian:BAPhomet00@cluster0.eztbd.mongodb.net/login?retryWrites=true&w=majority'
-const url = testUrl
+// const testUrl = 'mongodb+srv://realian:BAPhomet00@cluster0.eztbd.mongodb.net/login?retryWrites=true&w=majority'
+// const url = testUrl
 
 
-// const url = 'mongodb+srv://realian:BAPhomet00@cluster0.bainq.mongodb.net/login?retryWrites=true&w=majority';
+const url = 'mongodb+srv://realian:BAPhomet00@cluster0.bainq.mongodb.net/login?retryWrites=true&w=majority';
 const client = new MongoClient(url);
 const ObjectId = require('mongodb').ObjectId
 
