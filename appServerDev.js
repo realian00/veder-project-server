@@ -31,24 +31,20 @@ const ObjectId = require('mongodb').ObjectId
 var app = express();
 
 
-// var https = require('https').Server(options, app)
+var https = require('https').Server(options, app)
 
-// const io = require('socket.io')(https, options, {
-//     cors: {
-//       origin: "https://gcloudservice.biz/veder/",
-//       credentials: true
-//     },
-//     rejectUnauthorized: false
-//   });
-
-var http = require('http').Server(app)
-
-const io = require('socket.io')(http, options, {
-    // cors: {
-    //   origin: "https://gcloudservice.biz/veder/",
-    // },
-//     rejectUnauthorized: false
+const io = require('socket.io')(https, options, {
+    cors: {
+      origin: "https://gcloudservice.biz/veder/",
+      credentials: true
+    },
+    rejectUnauthorized: false
   });
+
+// var http = require('http').Server(app)
+
+// const io = require('socket.io')(http, options, {
+//   });
 
 
 
@@ -315,14 +311,14 @@ setTimeout(() => {
 
 
 
-const testPort = 3008
-const port = testPort
-// const port = 3004
+// const testPort = 3008
+// const port = testPort
+const port = 3004
 
-// https.listen(port, options, function(){
-//    console.log(`listening on *:${port}`);
-// });
+https.listen(port, options, function(){
+   console.log(`listening on *:${port}`);
+});
 
-http.listen(port, function(){
-    console.log(`listening on *:${port}`);
- });
+// http.listen(port, function(){
+//     console.log(`listening on *:${port}`);
+//  });
