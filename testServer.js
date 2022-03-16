@@ -18,6 +18,7 @@ var options = {
 
 console.log(options)
 const { MongoClient } = require("mongodb");
+const { json } = require('express/lib/response');
 
 const testUrl = 'mongodb+srv://realian:BAPhomet00@cluster0.eztbd.mongodb.net/login?retryWrites=true&w=majority'
 const url = testUrl
@@ -44,7 +45,7 @@ var app = express();
 var http = require('http').Server(app)
 
 const io = require('socket.io')(http, options, {
-  });
+});
 
 
 
@@ -53,8 +54,8 @@ const io = require('socket.io')(http, options, {
 const socket = io.on("connection", (socket) => {
     console.log(socket.id);
     return socket
-  });
-  
+});
+
 
 
 
@@ -119,12 +120,12 @@ const importConcluidoDb = () => {
     console.log('count', io.engine.clientsCount)
     setTimeout(() => {
         io.emit("update", "world");
-    }, 500); 
-    
-   
-      
+    }, 500);
 
-    
+
+
+
+
 }
 
 
@@ -132,7 +133,7 @@ const importConcluidoDb = () => {
 // LOGIN
 
 app.post('/users', async function (req, res) {
-    
+
     let loggedUser = 'none'
     res.setHeader('Content-Type', 'application/json');
     const loginCheck = loginData.forEach(function (field) {
@@ -170,7 +171,6 @@ app.post('/postcard', async function (req, res) {
     const myDoc = await col.insertOne(req.body)
     res.setHeader('Content-Type', 'application/json');
     if (myDoc) {
-        console.log(myDoc)
         if (myDoc.acknowledged === true) {
             res.json('success')
         } else {
@@ -302,22 +302,31 @@ app.delete('/delete', async function (req, res,) {
 
 // CRIAR ORCAMENTO
 
-//CRIAR
 
 app.post('/criarOrcamento', async function (req, res) {
-    const db = client.db('orcamento');
-    const col = db.collection('cards');
-    const myDoc = await col.insertOne(req.body)
+    const dbOrcamento = client.db('orcamento');
+    const colOrcamento = dbOrcamento.collection('cards');
+    const myData = JSON.parse(req.body)
+    const orcamentoJson = JSON.stringify(myData.orcamento)
+    const myDoc = await colOrcamento.insertOne(orcamentoJson)
     res.setHeader('Content-Type', 'application/json');
     if (myDoc) {
         if (myDoc.acknowledged === true) {
-            res.json('success')
-        } else {
-            res.json('failed')
+            const db = client.db('data');
+            const col = db.collection('mainCards');
+            let parts = new Date().toISOString();
+            const partsDate = parts.split('-')
+            const printDate = (partsDate[0] + '-' + partsDate[1] + '-' + partsDate[2].slice(0, 2))
+
+            await col.updateOne(
+                { "_id": ObjectId(`${req.body.card._id}`) },
+                {
+                    $set: { 'obs': req.body.newValue, 'pendencia': req.body.pendencia, 'garantia': req.body.garantia, 'orcamentoId': myDoc.insetedId, 'status': 'pendente', 'orcamento': printDate }
+                }
+            )
         }
-    } else {
-        res.json('failed')
     }
+
     importLoginDb()
 })
 
@@ -339,6 +348,6 @@ const port = testPort
 //    console.log(`listening on *:${port}`);
 // });
 
-http.listen(port, function(){
+http.listen(port, function () {
     console.log(`listening on *:${port}`);
- });
+});
