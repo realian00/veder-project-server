@@ -322,11 +322,10 @@ app.post('/criarOrcamento', async function (req, res) {
                     $set: { 'orcamentoId': myDoc.insertedId, 'status': 'pendente', 'orcamento': printDate }
                 }
             )
-        }
-        return res.json('success')
+        }importLoginDb()
+        
     }
-
-    importLoginDb()
+    return res.json('success')
 })
 
 
