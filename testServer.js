@@ -170,6 +170,7 @@ app.post('/postcard', async function (req, res) {
     const myDoc = await col.insertOne(req.body)
     res.setHeader('Content-Type', 'application/json');
     if (myDoc) {
+        console.log(myDoc)
         if (myDoc.acknowledged === true) {
             res.json('success')
         } else {
