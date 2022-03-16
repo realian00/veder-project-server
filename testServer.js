@@ -307,28 +307,29 @@ app.post('/criarOrcamento', async function (req, res) {
     const dbOrcamento = client.db('orcamento');
     const colOrcamento = dbOrcamento.collection('cards');
     const myData = req.body
-    const orcamentoJson = JSON.stringify(myData.orcamento)
-    const myDoc = await colOrcamento.insertOne(orcamentoJson)
-    res.setHeader('Content-Type', 'application/json');
-    if (myDoc) {
-        if (myDoc.acknowledged === true) {
-            const db = client.db('data');
-            const col = db.collection('mainCards');
-            let parts = new Date().toISOString();
-            const partsDate = parts.split('-')
-            const printDate = (partsDate[0] + '-' + partsDate[1] + '-' + partsDate[2].slice(0, 2))
+    console.log(myData)
+    // const orcamentoJson = JSON.stringify(myData.orcamento)
+    // const myDoc = await colOrcamento.insertOne(orcamentoJson)
+    // res.setHeader('Content-Type', 'application/json');
+    // if (myDoc) {
+    //     if (myDoc.acknowledged === true) {
+    //         const db = client.db('data');
+    //         const col = db.collection('mainCards');
+    //         let parts = new Date().toISOString();
+    //         const partsDate = parts.split('-')
+    //         const printDate = (partsDate[0] + '-' + partsDate[1] + '-' + partsDate[2].slice(0, 2))
 
-            await col.updateOne(
-                { "_id": ObjectId(`${req.body.card._id}`) },
-                {
-                    $set: { 'orcamentoId': myDoc.insertedId, 'status': 'pendente', 'orcamento': printDate }
-                }
-            )
-        }
-        return res.json('success')
-    }
+    //         await col.updateOne(
+    //             { "_id": ObjectId(`${req.body.card._id}`) },
+    //             {
+    //                 $set: { 'orcamentoId': myDoc.insertedId, 'status': 'pendente', 'orcamento': printDate }
+    //             }
+    //         )
+    //     }
+    //     return res.json('success')
+    // }
 
-    importLoginDb()
+    // importLoginDb()
 })
 
 
