@@ -299,7 +299,26 @@ app.delete('/delete', async function (req, res,) {
 });
 
 
+// CRIAR ORCAMENTO
 
+//CRIAR
+
+app.post('/criarOrcamento', async function (req, res) {
+    const db = client.db('orcamento');
+    const col = db.collection('cards');
+    const myDoc = await col.insertOne(req.body)
+    res.setHeader('Content-Type', 'application/json');
+    if (myDoc) {
+        if (myDoc.acknowledged === true) {
+            res.json('success')
+        } else {
+            res.json('failed')
+        }
+    } else {
+        res.json('failed')
+    }
+    importLoginDb()
+})
 
 
 connection()
