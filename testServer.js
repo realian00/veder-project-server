@@ -335,12 +335,9 @@ app.post('/verOrcamento', async function (req, res,) {
     const col = db.collection('cards');
 
     const findDoc = await col.findOne({ "_id": ObjectId(`${req.body.orcamentoId}`) })
-    console.log(findDoc)
-    importLoginDb()
-
     res.setHeader('Content-Type', 'application/json');
     if (findDoc) {
-        if (findDoc.acknowledged === true) {
+        if (findDoc._id === req.body.orcamentoId) {
             return res.json(findDoc)
         } else {
             return res.json('failed')
