@@ -308,9 +308,9 @@ app.post('/criarOrcamento', async function (req, res) {
     const colOrcamento = dbOrcamento.collection('cards');
     const myData = req.body
     console.log(myData.card)
-    // const orcamentoJson = JSON.stringify(myData.orcamento)
-    // const myDoc = await colOrcamento.insertOne(orcamentoJson)
-    // res.setHeader('Content-Type', 'application/json');
+    const orcamentoJson = JSON.stringify(myData.orcamento)
+    const myDoc = await colOrcamento.insertOne(myData.orcamento)
+    res.setHeader('Content-Type', 'application/json');
     // if (myDoc) {
     //     if (myDoc.acknowledged === true) {
     //         const db = client.db('data');
