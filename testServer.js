@@ -306,7 +306,7 @@ app.delete('/delete', async function (req, res,) {
 app.post('/criarOrcamento', async function (req, res) {
     const dbOrcamento = client.db('orcamento');
     const colOrcamento = dbOrcamento.collection('cards');
-    const myData = JSON.parse(req.body)
+    const myData = req.body
     const orcamentoJson = JSON.stringify(myData.orcamento)
     const myDoc = await colOrcamento.insertOne(orcamentoJson)
     res.setHeader('Content-Type', 'application/json');
