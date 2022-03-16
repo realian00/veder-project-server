@@ -335,6 +335,8 @@ app.post('/verOrcamento', async function (req, res,) {
     const col = db.collection('cards');
 
     const findDoc = await col.findOne({ "_id": ObjectId(`${req.body.orcamentoId}`) })
+    console.log('doc', findDoc._id)
+    console.log('body', req.body.orcamentoId)
     res.setHeader('Content-Type', 'application/json');
     if (findDoc) {
         if (findDoc._id === req.body.orcamentoId) {
