@@ -321,7 +321,7 @@ app.post('/criarOrcamento', async function (req, res) {
             await col.updateOne(
                 { "_id": ObjectId(`${req.body.card._id}`) },
                 {
-                    $set: { 'obs': req.body.newValue, 'pendencia': req.body.pendencia, 'garantia': req.body.garantia, 'orcamentoId': myDoc.insetedId, 'status': 'pendente', 'orcamento': printDate }
+                    $set: { 'orcamentoId': myDoc.insertedId, 'status': 'pendente', 'orcamento': printDate }
                 }
             )
         }
