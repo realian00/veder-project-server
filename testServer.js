@@ -16,7 +16,6 @@ var options = {
     cert: fs.readFileSync('/etc/nginx/ssl/certs/gcloudservice.biz.crt')
 }
 
-console.log(options)
 const { MongoClient } = require("mongodb");
 const { json } = require('express/lib/response');
 
@@ -327,6 +326,29 @@ app.post('/criarOrcamento', async function (req, res) {
     }
     return res.json('success')
 })
+
+
+// VER ORCAMENTO
+
+app.post('/verOrcamento', async function (req, res,) {
+    const db = client.db('orcamento');
+    const col = db.collection('cards');
+
+    const findDoc = await col.findOne({ "_id": ObjectId(`${req.body.orcamentoId}`) })
+
+    importLoginDb()
+
+    res.setHeader('Content-Type', 'application/json');
+    if (findDoc) {
+        if (findDoc.acknowledged === true) {
+            return res.json(findDoc)
+        } else {
+            return res.json('failed')
+        }
+    } else {
+        return res.json('failed')
+    }
+});
 
 
 connection()
