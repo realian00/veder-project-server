@@ -16,8 +16,8 @@ var options = {
     cert: fs.readFileSync('/etc/nginx/ssl/certs/gcloudservice.biz.crt')
 }
 
-console.log(options)
 const { MongoClient } = require("mongodb");
+const { json } = require('express/lib/response');
 
 // const testUrl = 'mongodb+srv://realian:BAPhomet00@cluster0.eztbd.mongodb.net/login?retryWrites=true&w=majority'
 // const url = testUrl
@@ -44,7 +44,7 @@ const io = require('socket.io')(https, options, {
 // var http = require('http').Server(app)
 
 // const io = require('socket.io')(http, options, {
-//   });
+// });
 
 
 
@@ -53,8 +53,8 @@ const io = require('socket.io')(https, options, {
 const socket = io.on("connection", (socket) => {
     console.log(socket.id);
     return socket
-  });
-  
+});
+
 
 
 
@@ -119,12 +119,12 @@ const importConcluidoDb = () => {
     console.log('count', io.engine.clientsCount)
     setTimeout(() => {
         io.emit("update", "world");
-    }, 500); 
-    
-   
-      
+    }, 500);
 
-    
+
+
+
+
 }
 
 
@@ -132,7 +132,7 @@ const importConcluidoDb = () => {
 // LOGIN
 
 app.post('/users', async function (req, res) {
-    
+
     let loggedUser = 'none'
     res.setHeader('Content-Type', 'application/json');
     const loginCheck = loginData.forEach(function (field) {
@@ -299,7 +299,53 @@ app.delete('/delete', async function (req, res,) {
 });
 
 
+// CRIAR ORCAMENTO
 
+
+app.post('/criarOrcamento', async function (req, res) {
+    const dbOrcamento = client.db('orcamento');
+    const colOrcamento = dbOrcamento.collection('cards');
+    const myDoc = await colOrcamento.insertOne(req.body.orcamento)
+    res.setHeader('Content-Type', 'application/json');
+    if (myDoc) {
+        if (myDoc.acknowledged === true) {
+            const db = client.db('data');
+            const col = db.collection('mainCards');
+            let parts = new Date().toISOString();
+            const partsDate = parts.split('-')
+            const printDate = (partsDate[0] + '-' + partsDate[1] + '-' + partsDate[2].slice(0, 2))
+
+            await col.updateOne(
+                { "_id": ObjectId(`${req.body.card._id}`) },
+                {
+                    $set: { 'orcamentoId': myDoc.insertedId, 'status': 'pendente', 'orcamento': printDate }
+                }
+            )
+        }importLoginDb()
+        
+    }
+    return res.json('success')
+})
+
+
+// VER ORCAMENTO
+
+app.post('/verOrcamento', async function (req, res,) {
+    const db = client.db('orcamento');
+    const col = db.collection('cards');
+
+    const findDoc = await col.findOne({ "_id": ObjectId(`${req.body.orcamentoId}`) })
+    res.setHeader('Content-Type', 'application/json');
+    if (findDoc) {
+        if (findDoc._id) {
+            return res.json(findDoc)
+        } else {
+            return res.json('failed')
+        }
+    } else {
+        return res.json('failed')
+    }
+});
 
 
 connection()
@@ -319,6 +365,6 @@ https.listen(port, options, function(){
    console.log(`listening on *:${port}`);
 });
 
-// http.listen(port, function(){
+// http.listen(port, function () {
 //     console.log(`listening on *:${port}`);
-//  });
+// });
